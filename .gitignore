@@ -62,6 +62,9 @@ typings/
 .env
 .env.test
 
+# cookies.txt
+cookies.txt
+
 # next.js build output
 .next
 

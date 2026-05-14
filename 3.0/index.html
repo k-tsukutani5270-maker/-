@@ -4,37 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>明日のお茶投票</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #6b9080; /* 優しめのグリーン */
+            --primary-color: #6b9080;
             --secondary-color: #a4c3b2;
-            --accent-color: #f6bd60; /* 温かみのあるイエロー */
-            --bg-color: #f7f1e3; /* 柔らかいクリーム色 */
+            --accent-color: #f6bd60;
+            --bg-color: #f7f1e3;
             --text-color: #5d5d5d;
             --card-bg: #ffffff;
-            --border-radius: 24px; /* もっと丸く */
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 弾むようなアニメーション */
+            --border-radius: 24px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         body {
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', sans-serif;
-            background: linear-gradient(135deg, #f7f1e3 0%, #f9ebff 50%, #e3f2fd 100%); /* パステルカラーのグラデーション */
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            background: linear-gradient(135deg, #f7f1e3 0%, #f9ebff 50%, #e3f2fd 100%);
             color: var(--text-color);
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden; /* 横スクロール禁止 */
-            overflow-y: auto;   /* 縦スクロール許可 */
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
-            padding: 40px 0; /* 上下に余白 */
+            padding: 40px 0;
         }
 
-        /* 背景のふわふわ絵文字（よりハッキリと） */
         .bg-emoji {
-            position: fixed; /* 画面に固定 */
-            bottom: -100px; /* 画面の一番下（の外側）に配置 */
+            position: fixed;
+            bottom: -100px;
             font-size: 3.5rem;
             opacity: 0;
             z-index: -1;
@@ -49,7 +51,6 @@
             100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
         }
 
-        /* 個別の絵文字の位置とタイミング（増量） */
         .e1 { left: 2%; animation-duration: 18s; animation-delay: 0s; }
         .e2 { left: 10%; animation-duration: 22s; animation-delay: -5s; }
         .e3 { left: 18%; animation-duration: 15s; animation-delay: -2s; }
@@ -87,22 +88,45 @@
         }
 
         header h1 {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
             color: var(--primary-color);
-            font-size: 1.8rem;
+            font-size: 2.5rem;
         }
 
         header p {
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
+            margin-bottom: 2.5rem;
+            font-size: 1.2rem;
             color: #888;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 15px;
+            border: 2px solid #eee;
+            font-family: inherit;
+            font-size: 1.1rem;
+            outline: none;
+            box-sizing: border-box;
         }
 
         .options-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.2rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
         .tea-card {
@@ -124,7 +148,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 4px 0 #f0f0f0; /* ぷっくりした厚み */
+            box-shadow: 0 4px 0 #f0f0f0;
         }
 
         .card-content .icon {
@@ -135,7 +159,7 @@
 
         .card-content .name {
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 1.3rem;
             color: var(--primary-color);
         }
 
@@ -147,43 +171,36 @@
         .tea-card input:checked + .card-content {
             border-color: var(--secondary-color);
             background-color: #f0f9f4;
-            transform: translateY(2px); /* 押した感 */
+            transform: translateY(2px);
             box-shadow: 0 2px 0 var(--secondary-color);
         }
 
-        .vote-button, .secondary-button {
+        .vote-button, .secondary-button, .login-button {
             width: 100%;
-            padding: 1rem;
+            padding: 1.2rem;
             border: none;
-            border-radius: 50px; /* 丸いボタン */
-            font-size: 1.1rem;
+            border-radius: 50px;
+            font-size: 1.4rem;
             font-weight: bold;
             cursor: pointer;
             transition: var(--transition);
             outline: none;
         }
 
-        .vote-button {
+        .vote-button, .login-button {
             background-color: var(--accent-color);
             color: white;
-            box-shadow: 0 4px 0 #e67e22; /* ボタンの厚み */
-            margin-top: 0.5rem;
+            box-shadow: 0 4px 0 #e67e22;
         }
 
-        .vote-button:hover {
+        .vote-button:hover, .login-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 0 #e67e22;
         }
 
-        .vote-button:active {
+        .vote-button:active, .login-button:active {
             transform: translateY(2px);
             box-shadow: 0 2px 0 #e67e22;
-        }
-
-        .vote-button:disabled {
-            background-color: #ccc;
-            box-shadow: 0 4px 0 #999;
-            cursor: not-allowed;
         }
 
         .secondary-button {
@@ -197,7 +214,6 @@
             display: none;
         }
 
-        /* Results styling */
         #results {
             animation: fadeIn 0.6s ease-out;
         }
@@ -214,36 +230,51 @@
         }
 
         .result-item {
-            margin-bottom: 1.2rem;
+            margin-bottom: 2rem;
         }
 
         .result-label {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
             font-weight: bold;
         }
 
-        .progress-bar {
-            height: 16px;
-            background-color: #f1f2f6;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        .tea-cup-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+            min-height: 50px;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
-            width: 0%;
-            transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
-            border-radius: 10px;
+        .tea-cup {
+            font-size: 2rem;
+            display: inline-block;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        @keyframes popIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            width: auto;
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <!-- 背景のふわふわ絵文字（増量版） -->
     <div class="bg-emoji e1">🍵</div>
     <div class="bg-emoji e2">🍃</div>
     <div class="bg-emoji e3">🌸</div>
@@ -262,14 +293,28 @@
     <div class="bg-emoji e16">🍮</div>
 
     <div class="app-container">
+        <button id="logout-button" class="secondary-button hidden">ログアウト</button>
         <header>
             <h1>🍵 明日のお茶投票</h1>
-            <p>明日、どのお茶を買うか決めてください！</p>
+            <p id="app-desc">明日、どのお茶を買うか決めてください！</p>
         </header>
 
         <main>
+            <!-- ログインフォーム -->
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username">ユーザー名</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">パスワード</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="login-button">ログイン</button>
+            </form>
+
             <!-- 投票フォーム -->
-            <form id="vote-form">
+            <form id="vote-form" class="hidden">
                 <div class="options-grid">
                     <label class="tea-card">
                         <input type="radio" name="tea" value="sencha" required>
@@ -278,7 +323,6 @@
                             <span class="name">煎茶</span>
                         </div>
                     </label>
-
                     <label class="tea-card">
                         <input type="radio" name="tea" value="hojicha">
                         <div class="card-content">
@@ -286,7 +330,6 @@
                             <span class="name">ほうじ茶</span>
                         </div>
                     </label>
-
                     <label class="tea-card">
                         <input type="radio" name="tea" value="oolong">
                         <div class="card-content">
@@ -294,7 +337,6 @@
                             <span class="name">烏龍茶</span>
                         </div>
                     </label>
-
                     <label class="tea-card">
                         <input type="radio" name="tea" value="jasmine">
                         <div class="card-content">
@@ -303,16 +345,13 @@
                         </div>
                     </label>
                 </div>
-
                 <button type="submit" class="vote-button">投票する</button>
             </form>
 
             <!-- 結果表示エリア -->
             <section id="results" class="hidden">
                 <h2>投票結果</h2>
-                <div id="results-container">
-                    <!-- JavaScript で動的に生成 -->
-                </div>
+                <div id="results-container"></div>
                 <button id="back-button" class="secondary-button">戻る</button>
             </section>
         </main>
@@ -320,120 +359,120 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
+            const loginForm = document.getElementById('login-form');
             const voteForm = document.getElementById('vote-form');
             const resultsSection = document.getElementById('results');
             const resultsContainer = document.getElementById('results-container');
             const backButton = document.getElementById('back-button');
+            const logoutButton = document.getElementById('logout-button');
+            const appDesc = document.getElementById('app-desc');
 
-            const teaNames = {
-                sencha: '煎茶',
-                hojicha: 'ほうじ茶',
-                oolong: '烏龍茶',
-                jasmine: 'ジャスミン茶'
+            const teaNames = { sencha: '煎茶', hojicha: 'ほうじ茶', oolong: '烏龍茶', jasmine: 'ジャスミン茶' };
+            const teaIcons = { sencha: '🍃', hojicha: '🍂', oolong: '🪵', jasmine: '🌸' };
+
+            const checkAuth = async () => {
+                try {
+                    const res = await fetch('/me');
+                    if (res.ok) {
+                        showVoteView();
+                    } else {
+                        showLoginView();
+                    }
+                } catch (e) { showLoginView(); }
             };
 
-            const teaIcons = {
-                sencha: '🍃',
-                hojicha: '🍂',
-                oolong: '🪵',
-                jasmine: '🌸'
+            const showLoginView = () => {
+                loginForm.classList.remove('hidden');
+                voteForm.classList.add('hidden');
+                resultsSection.classList.add('hidden');
+                logoutButton.classList.add('hidden');
+                appDesc.textContent = 'ログインして投票に参加しよう！';
             };
 
-            // ページ読み込み時に最新の結果をバックグラウンドで読み込んでおく（任意）
-            // 今回は表示切り替え時に最新を取るようにしますが、初期化コードとして定義
+            const showVoteView = () => {
+                loginForm.classList.add('hidden');
+                voteForm.classList.remove('hidden');
+                resultsSection.classList.add('hidden');
+                logoutButton.classList.remove('hidden');
+                appDesc.textContent = '明日、どのお茶を買うか決めてください！';
+            };
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const res = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                if (res.ok) { showVoteView(); } else { alert('ログインに失敗しました'); }
+            });
+
+            logoutButton.addEventListener('click', async () => {
+                await fetch('/logout', { method: 'POST' });
+                showLoginView();
+            });
+
             const fetchAndRenderResults = async () => {
                 try {
                     const response = await fetch('/votes');
+                    if (!response.ok) return;
                     const serverVotes = await response.json();
-                    
-                    const votes = {
-                        sencha: 0,
-                        hojicha: 0,
-                        oolong: 0,
-                        jasmine: 0
-                    };
-                    serverVotes.forEach(v => {
-                        if (votes.hasOwnProperty(v.option)) {
-                            votes[v.option] = v.count;
-                        }
-                    });
-
+                    const votes = { sencha: 0, hojicha: 0, oolong: 0, jasmine: 0 };
+                    serverVotes.forEach(v => { if (votes.hasOwnProperty(v.option)) votes[v.option] = v.count; });
                     resultsContainer.innerHTML = '';
-                    const totalVotes = Object.values(votes).reduce((a, b) => a + b, 0);
-
                     Object.keys(votes).forEach(key => {
                         const count = votes[key];
-                        const percentage = totalVotes === 0 ? 0 : Math.round((count / totalVotes) * 100);
-
                         const resultItem = document.createElement('div');
                         resultItem.className = 'result-item';
-                        resultItem.innerHTML = `
-                            <div class="result-label">
-                                <span>${teaIcons[key]} ${teaNames[key]}</span>
-                                <span>${count}票 (${percentage}%)</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 0%"></div>
-                            </div>
-                        `;
+                        resultItem.innerHTML = `<div class="result-label"><span>${teaIcons[key]} ${teaNames[key]}</span><span>${count}票</span></div>`;
+                        const cupDisplay = document.createElement('div');
+                        cupDisplay.className = 'tea-cup-display';
+                        for (let i = 0; i < count; i++) {
+                            const cup = document.createElement('span');
+                            cup.className = 'tea-cup';
+                            cup.textContent = '🍵';
+                            cup.style.animationDelay = `${i * 0.1}s`;
+                            cupDisplay.appendChild(cup);
+                        }
+                        if (count === 0) cupDisplay.innerHTML = '<span style="font-size: 0.9rem; opacity: 0.5; padding: 10px;">まだ票がありません</span>';
+                        resultItem.appendChild(cupDisplay);
                         resultsContainer.appendChild(resultItem);
-
-                        setTimeout(() => {
-                            const fill = resultItem.querySelector('.progress-fill');
-                            if (fill) fill.style.width = `${percentage}%`;
-                        }, 100);
                     });
-                } catch (err) {
-                    console.error('Failed to fetch results:', err);
-                    resultsContainer.innerHTML = '<p>結果の取得に失敗しました。</p>';
-                }
+                } catch (err) { console.error(err); }
             };
 
-            // 1. ページ読み込み時に実行
-            await fetchAndRenderResults();
-
-            // 投票処理
             voteForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const selectedTea = voteForm.tea.value;
-                const submitButton = voteForm.querySelector('.vote-button');
-
                 if (selectedTea) {
-                    // 二重送信防止
+                    const submitButton = voteForm.querySelector('.vote-button');
                     submitButton.disabled = true;
                     submitButton.textContent = '送信中...';
-
                     try {
                         const response = await fetch('/vote', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ option: selectedTea })
                         });
-                        
                         if (response.ok) {
-                            // 2. 投票成功後に最新結果を再取得して表示
                             await fetchAndRenderResults();
                             voteForm.classList.add('hidden');
                             resultsSection.classList.remove('hidden');
-                        } else {
-                            alert('投票の保存に失敗しました。');
-                        }
-                    } catch (err) {
-                        console.error('Failed to vote:', err);
-                        alert('サーバーとの通信に失敗しました。');
-                    } finally {
-                        submitButton.disabled = false;
-                        submitButton.textContent = '投票する';
-                    }
+                        } else { alert('投票に失敗しました。'); }
+                    } catch (err) { alert('通信に失敗しました。'); }
+                    finally { submitButton.disabled = false; submitButton.textContent = '投票する'; }
                 }
             });
 
-            // 戻るボタン
             backButton.addEventListener('click', () => {
                 resultsSection.classList.add('hidden');
                 voteForm.classList.remove('hidden');
                 voteForm.reset();
             });
+
+            checkAuth();
         });
     </script>
 </body>
