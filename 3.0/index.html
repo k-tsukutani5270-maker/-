@@ -6,51 +6,102 @@
     <title>明日のお茶投票</title>
     <style>
         :root {
-            --primary-color: #4a7c59;
-            --secondary-color: #8fbc8f;
-            --accent-color: #d4a373;
-            --bg-color: #fefae0;
-            --text-color: #283618;
+            --primary-color: #6b9080; /* 優しめのグリーン */
+            --secondary-color: #a4c3b2;
+            --accent-color: #f6bd60; /* 温かみのあるイエロー */
+            --bg-color: #f7f1e3; /* 柔らかいクリーム色 */
+            --text-color: #5d5d5d;
             --card-bg: #ffffff;
-            --border-radius: 12px;
-            --transition: all 0.3s ease;
+            --border-radius: 24px; /* もっと丸く */
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 弾むようなアニメーション */
         }
 
         body {
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+            background: linear-gradient(135deg, #f7f1e3 0%, #f9ebff 50%, #e3f2fd 100%); /* パステルカラーのグラデーション */
             color: var(--text-color);
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden; /* 横スクロール禁止 */
+            overflow-y: auto;   /* 縦スクロール許可 */
+            position: relative;
+            padding: 40px 0; /* 上下に余白 */
         }
+
+        /* 背景のふわふわ絵文字（よりハッキリと） */
+        .bg-emoji {
+            position: fixed; /* 画面に固定 */
+            bottom: -100px; /* 画面の一番下（の外側）に配置 */
+            font-size: 3.5rem;
+            opacity: 0;
+            z-index: -1;
+            user-select: none;
+            animation: float 12s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* 個別の絵文字の位置とタイミング（増量） */
+        .e1 { left: 2%; animation-duration: 18s; animation-delay: 0s; }
+        .e2 { left: 10%; animation-duration: 22s; animation-delay: -5s; }
+        .e3 { left: 18%; animation-duration: 15s; animation-delay: -2s; }
+        .e4 { left: 25%; animation-duration: 25s; animation-delay: -10s; }
+        .e5 { left: 32%; animation-duration: 19s; animation-delay: -3s; }
+        .e6 { left: 40%; animation-duration: 21s; animation-delay: -7s; }
+        .e7 { left: 48%; animation-duration: 17s; animation-delay: -1s; }
+        .e8 { left: 55%; animation-duration: 24s; animation-delay: -4s; }
+        .e9 { left: 62%; animation-duration: 20s; animation-delay: -8s; }
+        .e10 { left: 70%; animation-duration: 16s; animation-delay: -12s; }
+        .e11 { left: 78%; animation-duration: 23s; animation-delay: -6s; }
+        .e12 { left: 85%; animation-duration: 14s; animation-delay: -9s; }
+        .e13 { left: 92%; animation-duration: 26s; animation-delay: -15s; }
+        .e14 { left: 5%; animation-duration: 20s; animation-delay: -11s; }
+        .e15 { left: 95%; animation-duration: 19s; animation-delay: -2s; }
+        .e16 { left: 50%; animation-duration: 22s; animation-delay: -5s; }
 
         .app-container {
             background-color: var(--card-bg);
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             border-radius: var(--border-radius);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.05);
             width: 90%;
-            max-width: 500px;
+            max-width: 450px;
             text-align: center;
+            border: 4px solid #fff;
+            position: relative;
+            z-index: 1;
+            animation: slideDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         header h1 {
             margin-bottom: 0.5rem;
             color: var(--primary-color);
+            font-size: 1.8rem;
         }
 
         header p {
             margin-bottom: 2rem;
-            opacity: 0.8;
+            font-size: 0.95rem;
+            color: #888;
         }
 
         .options-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            gap: 1.2rem;
             margin-bottom: 2rem;
         }
 
@@ -65,54 +116,81 @@
         }
 
         .card-content {
-            border: 2px solid #eee;
-            padding: 1.5rem;
+            background: #fdfdfd;
+            border: 2px solid #f0f0f0;
+            padding: 1.5rem 1rem;
             border-radius: var(--border-radius);
             transition: var(--transition);
             display: flex;
             flex-direction: column;
             align-items: center;
+            box-shadow: 0 4px 0 #f0f0f0; /* ぷっくりした厚み */
         }
 
         .card-content .icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
         }
 
         .card-content .name {
             font-weight: bold;
+            font-size: 1rem;
+            color: var(--primary-color);
+        }
+
+        .tea-card:hover .card-content {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 0 #f0f0f0;
         }
 
         .tea-card input:checked + .card-content {
-            border-color: var(--primary-color);
-            background-color: rgba(74, 124, 89, 0.1);
-            transform: translateY(-5px);
+            border-color: var(--secondary-color);
+            background-color: #f0f9f4;
+            transform: translateY(2px); /* 押した感 */
+            box-shadow: 0 2px 0 var(--secondary-color);
         }
 
         .vote-button, .secondary-button {
             width: 100%;
             padding: 1rem;
             border: none;
-            border-radius: var(--border-radius);
+            border-radius: 50px; /* 丸いボタン */
             font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
             transition: var(--transition);
+            outline: none;
         }
 
         .vote-button {
-            background-color: var(--primary-color);
+            background-color: var(--accent-color);
             color: white;
+            box-shadow: 0 4px 0 #e67e22; /* ボタンの厚み */
+            margin-top: 0.5rem;
         }
 
         .vote-button:hover {
-            background-color: #3e6649;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #e67e22;
+        }
+
+        .vote-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #e67e22;
+        }
+
+        .vote-button:disabled {
+            background-color: #ccc;
+            box-shadow: 0 4px 0 #999;
+            cursor: not-allowed;
         }
 
         .secondary-button {
-            background-color: #eee;
-            color: var(--text-color);
+            background-color: #f1f2f6;
+            color: #a4b0be;
             margin-top: 1.5rem;
+            font-size: 0.9rem;
         }
 
         .hidden {
@@ -120,38 +198,69 @@
         }
 
         /* Results styling */
+        #results {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         #results-container {
             text-align: left;
             margin-top: 1rem;
+            padding: 0 0.5rem;
         }
 
         .result-item {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
         .result-label {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: bold;
         }
 
         .progress-bar {
-            height: 12px;
-            background-color: #eee;
-            border-radius: 6px;
+            height: 16px;
+            background-color: #f1f2f6;
+            border-radius: 10px;
             overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .progress-fill {
             height: 100%;
-            background-color: var(--secondary-color);
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
             width: 0%;
-            transition: width 1s ease-out;
+            transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
+    <!-- 背景のふわふわ絵文字（増量版） -->
+    <div class="bg-emoji e1">🍵</div>
+    <div class="bg-emoji e2">🍃</div>
+    <div class="bg-emoji e3">🌸</div>
+    <div class="bg-emoji e4">🍂</div>
+    <div class="bg-emoji e5">🪵</div>
+    <div class="bg-emoji e6">🍬</div>
+    <div class="bg-emoji e7">🍵</div>
+    <div class="bg-emoji e8">🍰</div>
+    <div class="bg-emoji e9">🌸</div>
+    <div class="bg-emoji e10">🍃</div>
+    <div class="bg-emoji e11">🍡</div>
+    <div class="bg-emoji e12">🍵</div>
+    <div class="bg-emoji e13">🧁</div>
+    <div class="bg-emoji e14">🌸</div>
+    <div class="bg-emoji e15">🍂</div>
+    <div class="bg-emoji e16">🍮</div>
+
     <div class="app-container">
         <header>
             <h1>🍵 明日のお茶投票</h1>
@@ -210,19 +319,11 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const voteForm = document.getElementById('vote-form');
             const resultsSection = document.getElementById('results');
             const resultsContainer = document.getElementById('results-container');
             const backButton = document.getElementById('back-button');
-
-            // 初期データ (localStorage から取得するか、デフォルト値)
-            let votes = JSON.parse(localStorage.getItem('teaVotes')) || {
-                sencha: 0,
-                hojicha: 0,
-                oolong: 0,
-                jasmine: 0
-            };
 
             const teaNames = {
                 sencha: '煎茶',
@@ -238,49 +339,94 @@
                 jasmine: '🌸'
             };
 
+            // ページ読み込み時に最新の結果をバックグラウンドで読み込んでおく（任意）
+            // 今回は表示切り替え時に最新を取るようにしますが、初期化コードとして定義
+            const fetchAndRenderResults = async () => {
+                try {
+                    const response = await fetch('/votes');
+                    const serverVotes = await response.json();
+                    
+                    const votes = {
+                        sencha: 0,
+                        hojicha: 0,
+                        oolong: 0,
+                        jasmine: 0
+                    };
+                    serverVotes.forEach(v => {
+                        if (votes.hasOwnProperty(v.option)) {
+                            votes[v.option] = v.count;
+                        }
+                    });
+
+                    resultsContainer.innerHTML = '';
+                    const totalVotes = Object.values(votes).reduce((a, b) => a + b, 0);
+
+                    Object.keys(votes).forEach(key => {
+                        const count = votes[key];
+                        const percentage = totalVotes === 0 ? 0 : Math.round((count / totalVotes) * 100);
+
+                        const resultItem = document.createElement('div');
+                        resultItem.className = 'result-item';
+                        resultItem.innerHTML = `
+                            <div class="result-label">
+                                <span>${teaIcons[key]} ${teaNames[key]}</span>
+                                <span>${count}票 (${percentage}%)</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                        `;
+                        resultsContainer.appendChild(resultItem);
+
+                        setTimeout(() => {
+                            const fill = resultItem.querySelector('.progress-fill');
+                            if (fill) fill.style.width = `${percentage}%`;
+                        }, 100);
+                    });
+                } catch (err) {
+                    console.error('Failed to fetch results:', err);
+                    resultsContainer.innerHTML = '<p>結果の取得に失敗しました。</p>';
+                }
+            };
+
+            // 1. ページ読み込み時に実行
+            await fetchAndRenderResults();
+
             // 投票処理
-            voteForm.addEventListener('submit', (e) => {
+            voteForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const selectedTea = voteForm.tea.value;
+                const submitButton = voteForm.querySelector('.vote-button');
 
                 if (selectedTea) {
-                    votes[selectedTea]++;
-                    localStorage.setItem('teaVotes', JSON.stringify(votes));
-                    showResults();
+                    // 二重送信防止
+                    submitButton.disabled = true;
+                    submitButton.textContent = '送信中...';
+
+                    try {
+                        const response = await fetch('/vote', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ option: selectedTea })
+                        });
+                        
+                        if (response.ok) {
+                            // 2. 投票成功後に最新結果を再取得して表示
+                            await fetchAndRenderResults();
+                            voteForm.classList.add('hidden');
+                            resultsSection.classList.remove('hidden');
+                        } else {
+                            alert('投票の保存に失敗しました。');
+                        }
+                    } catch (err) {
+                        console.error('Failed to vote:', err);
+                        alert('サーバーとの通信に失敗しました。');
+                    } finally {
+                        submitButton.disabled = false;
+                        submitButton.textContent = '投票する';
+                    }
                 }
             });
-
-            // 結果表示
-            function showResults() {
-                voteForm.classList.add('hidden');
-                resultsSection.classList.remove('hidden');
-
-                resultsContainer.innerHTML = '';
-                const totalVotes = Object.values(votes).reduce((a, b) => a + b, 0);
-
-                Object.keys(votes).forEach(key => {
-                    const count = votes[key];
-                    const percentage = totalVotes === 0 ? 0 : Math.round((count / totalVotes) * 100);
-
-                    const resultItem = document.createElement('div');
-                    resultItem.className = 'result-item';
-                    resultItem.innerHTML = `
-                        <div class="result-label">
-                            <span>${teaIcons[key]} ${teaNames[key]}</span>
-                            <span>${count}票 (${percentage}%)</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%"></div>
-                        </div>
-                    `;
-                    resultsContainer.appendChild(resultItem);
-
-                    // アニメーション用に遅延させて幅を設定
-                    setTimeout(() => {
-                        resultItem.querySelector('.progress-fill').style.width = `${percentage}%`;
-                    }, 100);
-                });
-            }
 
             // 戻るボタン
             backButton.addEventListener('click', () => {
